@@ -2,13 +2,18 @@
 #include "bluetoothUARTdriver.h"
 #include "esp8266UARTdriver.h"
 #include "delay.h"
+#include <stdio.h>
+
+#define WIFI_SSID 			"MyHotspot"
+#define WIFI_PASSWORD 	""
 
 uint8_t packet[] = "*****STM32F407vgt6 UDP Example - AllThingsTalk*****\r\n";
 uint8_t cmdTest[] = "AT\r\n";
 uint8_t cmdCheckVersionNumber[] = "AT+GMR\r\n";
 uint8_t cmdEspWIFIMode[] = "AT+CWMODE=1\r\n";			//Station Mode
 uint8_t cmdListAvailabelAPs[] = "AT+CWLAP\r\n";			//List Available Access Points
-uint8_t cmdConnectAP[] = "AT+CWJAP=\"MyHotspot\",\"\"\r\n";			//Connect to AP -> SSID: MyHotspot, Password: None
+uint8_t cmdDisconnectFromAP[] = "AT+CWQAP\r\n";			//List Available Access Points
+uint8_t cmdConnectAP[] = "";
 
 int main() {
 	bluetoothInit();	//HC05 Init
@@ -28,8 +33,12 @@ int main() {
 	delayMs(400);
 	esp8266SendPacket(cmdListAvailabelAPs);
 	delayMs(5000);
+	esp8266SendPacket(cmdDisconnectFromAP);
+	delayMs(2000);
+	
+	sprintf((char *)cmdConnectAP, "AT+CWJAP=\"%s\",\"%s\"\r\n", WIFI_SSID, WIFI_PASSWORD); 
 	esp8266SendPacket(cmdConnectAP);
-	delayMs(800);
+	delayMs(2000);
 
 	while(1) {
 		GPIOD->ODR |= 1ul << 14;

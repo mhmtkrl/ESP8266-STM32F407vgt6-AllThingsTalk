@@ -11,3 +11,4 @@
 .\objects\main.o: bluetoothUARTdriver.h
 .\objects\main.o: esp8266UARTdriver.h
 .\objects\main.o: delay.h
+.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
