@@ -6,7 +6,9 @@
 uint8_t packet[] = "*****STM32F407vgt6 UDP Example - AllThingsTalk*****\r\n";
 uint8_t cmdTest[] = "AT\r\n";
 uint8_t cmdCheckVersionNumber[] = "AT+GMR\r\n";
-uint8_t cmdEspWIFIMode[] = "AT+CWMODE?\r\n";
+uint8_t cmdEspWIFIMode[] = "AT+CWMODE=1\r\n";			//Station Mode
+uint8_t cmdListAvailabelAPs[] = "AT+CWLAP\r\n";			//List Available Access Points
+uint8_t cmdConnectAP[] = "AT+CWJAP=\"MyHotspot\",\"\"\r\n";			//Connect to AP
 
 int main() {
 	bluetoothInit();	//HC05 Init
@@ -24,6 +26,10 @@ int main() {
 	delayMs(400);
 	esp8266SendPacket(cmdEspWIFIMode);
 	delayMs(400);
+	esp8266SendPacket(cmdListAvailabelAPs);
+	delayMs(5000);
+	esp8266SendPacket(cmdConnectAP);
+	delayMs(800);
 
 	while(1) {
 		GPIOD->ODR |= 1ul << 14;
