@@ -4,7 +4,9 @@
 #include "delay.h"
 
 uint8_t packet[] = "*****STM32F407vgt6 UDP Example - AllThingsTalk*****\r\n";
-uint8_t cmd[] = "AT\r\n";
+uint8_t cmdTest[] = "AT\r\n";
+uint8_t cmdCheckVersionNumber[] = "AT+GMR\r\n";
+uint8_t cmdEspWIFIMode[] = "AT+CWMODE?\r\n";
 
 int main() {
 	bluetoothInit();	//HC05 Init
@@ -15,7 +17,12 @@ int main() {
 	GPIOD->ODR |= 1ul << 12;
 	//////////Send Test Text and Command//////////
 	bluetoothSendPacket(packet);
-	esp8266SendPacket(cmd);
+	
+	esp8266SendPacket(cmdTest);
+	delayMs(400);
+	esp8266SendPacket(cmdCheckVersionNumber);
+	delayMs(400);
+	esp8266SendPacket(cmdEspWIFIMode);
 	delayMs(400);
 
 	while(1) {
