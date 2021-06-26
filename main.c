@@ -25,6 +25,7 @@ uint8_t cmdCreateUDPsocket[] = "";									//Create an UDP socket
 uint8_t UDP_PACKET[127];														//UDP packet
 uint16_t UDP_PACKET_LENGTH = 0;											//UDP packet length
 uint8_t cmdSendUDPdata[127];												//Send UDP data
+uint8_t UDP_RAW_DATA = 0;
 
 int main() {
 	bluetoothInit();	//HC05 Init
@@ -57,7 +58,7 @@ int main() {
 	sprintf((char *)cmdCreateUDPsocket, "AT+CIPSTART=\"UDP\",\"%s\",%d,%d\r\n", DESTINATION_IP, DESTINATION_PORT, LOCAL_PORT);
 	esp8266SendPacket(cmdCreateUDPsocket);
 	delayMs(800);
-	UDP_PACKET_LENGTH = sprintf((char *)UDP_PACKET, "uin5IqUVr2KbwPYa1KHyEbem\nmaker:4ckc0qA4ONSsXv2yFItdB7f5eKzVKIclAdCphrEn\n{\"rawData\":{\"value\":98}}\r\n");
+	UDP_PACKET_LENGTH = sprintf((char *)UDP_PACKET, "uin5IqUVr2KbwPYa1KHyEbem\nmaker:4ckc0qA4ONSsXv2yFItdB7f5eKzVKIclAdCphrEn\n{\"rawData\":{\"value\":%d}}\r\n", UDP_RAW_DATA);
 	sprintf((char *)cmdSendUDPdata, "AT+CIPSEND=%d\r\n", UDP_PACKET_LENGTH);
 	esp8266SendPacket(cmdSendUDPdata);
 	delayMs(400);
@@ -65,10 +66,17 @@ int main() {
 	delayMs(800);
 
 	while(1) {
+		UDP_RAW_DATA += 10; 
+		if(UDP_RAW_DATA > 100) UDP_RAW_DATA = 0;
+		
 		GPIOD->ODR |= 1ul << 14;
 		delayMs(1000);
 		GPIOD->ODR &= ~(1ul << 14);
+		UDP_PACKET_LENGTH = sprintf((char *)UDP_PACKET, "uin5IqUVr2KbwPYa1KHyEbem\nmaker:4ckc0qA4ONSsXv2yFItdB7f5eKzVKIclAdCphrEn\n{\"rawData\":{\"value\":%d}}\r\n", UDP_RAW_DATA);
+		sprintf((char *)cmdSendUDPdata, "AT+CIPSEND=%d\r\n", UDP_PACKET_LENGTH);
+		esp8266SendPacket(cmdSendUDPdata);
 		delayMs(1000);
+		esp8266SendPacket(UDP_PACKET);
 	}
 }
 
