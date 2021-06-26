@@ -1,0 +1,21 @@
+
+****Connections***
+ESP8266_RX -> PB10
+ESP8266_TX -> PB11
+!ESP8266_EN -> 3.3V!
+
+HC05_RX    -> PA2
+HC05_TX    -> PA3
+
+
+***Comm Protocols***
+ESP8266 <---> STM32F407vgt6 => USART3 (115200) -> Connection to WIFI
+hc05    <---> STM32F407vgt6 => USART2 (115200) -> For debugging
+
+
+***Documents***
+RM0090->https://www.st.com/resource/en/reference_manual/dm00031020-stm32f405-415-stm32f407-417-stm32f427-437-and-stm32f429-439-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf
+
+
+
+
