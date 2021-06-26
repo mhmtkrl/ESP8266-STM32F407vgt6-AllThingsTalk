@@ -393,6 +393,36 @@
               <FileType>5</FileType>
               <FilePath>.\notes.txt</FilePath>
             </File>
+            <File>
+              <FileName>bluetoothUARTdriver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\bluetoothUARTdriver.h</FilePath>
+            </File>
+            <File>
+              <FileName>bluetoothUARTdriver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\bluetoothUARTdriver.c</FilePath>
+            </File>
+            <File>
+              <FileName>esp8266UARTdriver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\esp8266UARTdriver.h</FilePath>
+            </File>
+            <File>
+              <FileName>esp8266UARTdriver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\esp8266UARTdriver.c</FilePath>
+            </File>
+            <File>
+              <FileName>delay.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\delay.h</FilePath>
+            </File>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\delay.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
