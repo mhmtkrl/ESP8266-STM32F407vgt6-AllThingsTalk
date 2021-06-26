@@ -16,6 +16,17 @@ hc05    <---> STM32F407vgt6 => USART2 (115200) -> For debugging
 ***Documents***
 RM0090->https://www.st.com/resource/en/reference_manual/dm00031020-stm32f405-415-stm32f407-417-stm32f427-437-and-stm32f429-439-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf
 
+***AllThingsTalk UDP Messaging API***
+https://docs.allthingstalk.com/developers/api/udp-messaging/
+
+IP ADDRESS : 20.61.15.37
+PORT       : 8891 
+
+***Message Format***
+DeviceID\nDeviceToken\nDeviceState
+
+***ESP8266 AT Command Examples page:4 -> UDP Transmission***
+
 
 
 

@@ -4,8 +4,12 @@
 #include "delay.h"
 #include <stdio.h>
 
-#define WIFI_SSID 			"MyHotspot"
-#define WIFI_PASSWORD 	""
+#define WIFI_SSID 				"MyHotspot"
+#define WIFI_PASSWORD 		""
+
+#define DESTINATION_IP		"20.61.15.37"
+#define DESTINATION_PORT	8891
+#define LOCAL_PORT				5555
 
 uint8_t packet[] = "*****STM32F407vgt6 UDP Example - AllThingsTalk*****\r\n";
 uint8_t cmdTest[] = "AT\r\n";
@@ -14,6 +18,8 @@ uint8_t cmdEspWIFIMode[] = "AT+CWMODE=1\r\n";			//Station Mode
 uint8_t cmdListAvailabelAPs[] = "AT+CWLAP\r\n";			//List Available Access Points
 uint8_t cmdDisconnectFromAP[] = "AT+CWQAP\r\n";			//List Available Access Points
 uint8_t cmdConnectAP[] = "";
+
+uint8_t cmdCreateUDPsocket[] = "";
 
 int main() {
 	bluetoothInit();	//HC05 Init
@@ -27,17 +33,9 @@ int main() {
 	
 	esp8266SendPacket(cmdTest);
 	delayMs(400);
-	esp8266SendPacket(cmdCheckVersionNumber);
-	delayMs(400);
-	esp8266SendPacket(cmdEspWIFIMode);
-	delayMs(400);
-	esp8266SendPacket(cmdListAvailabelAPs);
-	delayMs(5000);
-	esp8266SendPacket(cmdDisconnectFromAP);
-	delayMs(2000);
 	
-	sprintf((char *)cmdConnectAP, "AT+CWJAP=\"%s\",\"%s\"\r\n", WIFI_SSID, WIFI_PASSWORD); 
-	esp8266SendPacket(cmdConnectAP);
+	sprintf((char *)cmdCreateUDPsocket, "AT+CIPSTART=\"UDP\",\"%s\",%d,%d\r\n", DESTINATION_IP, DESTINATION_PORT, LOCAL_PORT);
+	esp8266SendPacket(cmdCreateUDPsocket);
 	delayMs(2000);
 
 	while(1) {
