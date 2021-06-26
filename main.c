@@ -8,7 +8,7 @@ uint8_t cmdTest[] = "AT\r\n";
 uint8_t cmdCheckVersionNumber[] = "AT+GMR\r\n";
 uint8_t cmdEspWIFIMode[] = "AT+CWMODE=1\r\n";			//Station Mode
 uint8_t cmdListAvailabelAPs[] = "AT+CWLAP\r\n";			//List Available Access Points
-uint8_t cmdConnectAP[] = "AT+CWJAP=\"MyHotspot\",\"\"\r\n";			//Connect to AP
+uint8_t cmdConnectAP[] = "AT+CWJAP=\"MyHotspot\",\"\"\r\n";			//Connect to AP -> SSID: MyHotspot, Password: None
 
 int main() {
 	bluetoothInit();	//HC05 Init
