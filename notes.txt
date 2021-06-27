@@ -27,6 +27,14 @@ DeviceID\nDeviceToken\nDeviceState
 
 ***ESP8266 AT Command Examples page:4 -> UDP Transmission***
 
+***TIM7***
+https://www.st.com/resource/en/datasheet/dm00037051.pdf
+HSI = 16 MHz => APB1 = 16 MHz (TIM7 Clock Frequency)
+TIM7 Prescaler Value = 8000 => TIM7 Clock Source = 2000 Hz = 2 KHz
+TIM7 CNT counts every 1/2000 Hz = 0.5 ms
+If TIM7 ARR = 1000 => 1000 * 0.5 ms = 500 ms 
+
+
 
 
 

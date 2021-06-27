@@ -4,9 +4,9 @@
 #define DEVICE_TOKENS 		"maker:4ckc0qA4ONSsXv2yFItdB7f5eKzVKIclAdCphrEn"
 
 void TestCommand(void);
-void ConnectHotspot(uint8_t ssid[], uint8_t psd[]);
-void CreateUDPSocket(uint8_t destination_ip[], uint32_t destination_port, uint32_t local_port);
-void sendUDPData(uint8_t assetName[], uint8_t data);
+void ConnectHotspot(char ssid[16], char psd[16]);
+void CreateUDPSocket(char destination_ip[], uint32_t destination_port, uint32_t local_port);
+void sendUDPData(char assetName[], uint8_t data);
 
 typedef struct {
 	uint8_t espTestCommand[64];

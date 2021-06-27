@@ -16,8 +16,20 @@
 
 uint8_t debugPacket[] = "*****STM32F407vgt6 UDP Example - AllThingsTalk*****\r\n";
 uint8_t testValue = 0;
+uint8_t timerCounter = 0;
 
 int main() {
+	////////////////-1 second Interrupt-//////////////////
+	RCC->APB1ENR |= 1ul << 5;	//TIM7 clock is enabled
+	
+	TIM7->CR1 |= 1ul << 2;	  //Only counter overflow generates an update interrupt
+	TIM7->DIER |= 1ul << 0;		//TIM7 Update Interrupt Enable
+	TIM7->CNT = 0;
+	TIM7->PSC = 7999;					//RM0090 page: 706 => The Counter Clock = f_ck_psk / (TIM7->PSC + 1)
+	TIM7->ARR = 2000;       
+	TIM7->CR1 |= 1ul << 0;
+  NVIC_EnableIRQ(TIM7_IRQn);
+	
 	bluetoothInit();	//HC05 Init
 	esp8266Init();		//ESP8266 Init
 	//////////Using LEDs on the board//////////
@@ -31,10 +43,27 @@ int main() {
 	CreateUDPSocket(DESTINATION_IP, DESTINATION_PORT, LOCAL_PORT);
 	
 	while(1) {
-		sendUDPData(ASSET_NAME, testValue);
-		testValue += 10;
-		if(testValue > 100) testValue = 0;
+		if(timerCounter == 1) {
+			GPIOD->ODR |= 1ul << 12;
+		}
+		if(timerCounter == 2) {
+			GPIOD->ODR &= ~(1ul << 12);
+		}
+		//Sending UDP packet every 3 seconds 
+		if(timerCounter >= 3) {
+			sendUDPData(ASSET_NAME, testValue);
+			testValue += 10;
+			if(testValue > 100) testValue = 0;
+			timerCounter = 0;
+		}
 	}
+}
+
+void TIM7_IRQHandler() {
+	if(TIM7->SR) {
+		timerCounter++;
+	}
+	TIM7->SR = 0;
 }
 
 void USART3_IRQHandler() {
