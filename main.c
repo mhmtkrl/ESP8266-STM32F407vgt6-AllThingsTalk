@@ -2,8 +2,9 @@
 #include "bluetoothUARTdriver.h"
 #include "esp8266UARTdriver.h"
 #include "delay.h"
-#include <stdio.h>
 #include "esp8266ATcommands.h"
+#include "timer7Driver.h"
+#include <stdio.h>
 
 #define WIFI_SSID 				"MyHotspot"
 #define WIFI_PASSWORD 		""
@@ -19,17 +20,7 @@ uint8_t testValue = 0;
 uint8_t timerCounter = 0;
 
 int main() {
-	////////////////-1 second Interrupt-//////////////////
-	RCC->APB1ENR |= 1ul << 5;	//TIM7 clock is enabled
-	
-	TIM7->CR1 |= 1ul << 2;	  //Only counter overflow generates an update interrupt
-	TIM7->DIER |= 1ul << 0;		//TIM7 Update Interrupt Enable
-	TIM7->CNT = 0;
-	TIM7->PSC = 7999;					//RM0090 page: 706 => The Counter Clock = f_ck_psk / (TIM7->PSC + 1)
-	TIM7->ARR = 2000;       
-	TIM7->CR1 |= 1ul << 0;
-  NVIC_EnableIRQ(TIM7_IRQn);
-	
+	timer7Init();
 	bluetoothInit();	//HC05 Init
 	esp8266Init();		//ESP8266 Init
 	//////////Using LEDs on the board//////////
@@ -65,11 +56,3 @@ void TIM7_IRQHandler() {
 	}
 	TIM7->SR = 0;
 }
-
-void USART3_IRQHandler() {
-	if((USART3->SR & (1ul << 5))) {
-		bluetoothSendByte(USART3->DR);
-		USART3->SR &= ~(1ul << 5);
-	}
-}
-

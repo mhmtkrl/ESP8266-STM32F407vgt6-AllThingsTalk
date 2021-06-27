@@ -1,4 +1,5 @@
 #include "esp8266UARTdriver.h"
+#include "bluetoothUARTdriver.h"
 
 void esp8266Init(void) {
 	RCC->AHB1ENR |= 1ul << 1;			//GPIOB Clock Enable
@@ -23,5 +24,12 @@ void esp8266SendPacket(uint8_t *txPacket) {
 	while(*txPacket) {
 		esp8266SendByte(*txPacket);
 		txPacket++;
+	}
+}
+
+void USART3_IRQHandler() {
+	if((USART3->SR & (1ul << 5))) {
+		bluetoothSendByte(USART3->DR);
+		USART3->SR &= ~(1ul << 5);
 	}
 }
